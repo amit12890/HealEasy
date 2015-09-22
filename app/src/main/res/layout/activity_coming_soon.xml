@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/medical_bkg"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark">
+
+
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="Google Place"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:textSize="20sp"
+                />
+
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/img_coming_soon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/medical_equipments"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COMING SOON"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+ 
+</RelativeLayout>

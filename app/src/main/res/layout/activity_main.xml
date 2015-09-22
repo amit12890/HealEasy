@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/medical_bkg"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark">
+
+
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="Google Place"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:textSize="20sp"
+                />
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lay_title">
+
+        <com.example.amitthakkar.myapplication.customview.TintableImageView
+            android:id="@+id/img_search"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_search"
+            android:padding="10dp"
+            android:background="@color/primary"
+            app:tint="#50cccccc"/>
+        <EditText
+            android:id="@+id/edt_city"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@+id/img_search"
+            android:background="@drawable/edittext_bkg"
+            android:layout_height="50dp"
+            android:hint="Search by City"
+            android:singleLine="true"
+            android:padding="5dp"/>
+
+    </RelativeLayout>
+
+    <!--  List view -->
+    <com.rey.material.widget.ListView
+        android:id="@+id/list"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lay_search"/>
+    
+    <TextView
+        android:id="@+id/txt_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Data Found"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"/>
+ 
+</RelativeLayout>

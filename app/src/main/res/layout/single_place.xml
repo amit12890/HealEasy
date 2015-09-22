@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/medical_bkg"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark">
+
+
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Place Detail"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"
+            />
+
+
+
+
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_below="@+id/lay_title"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <LinearLayout
+        android:layout_below="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+
+        <!-- Name Label -->
+        <TextView
+            android:text="Name:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="5dip"
+            android:textStyle="bold"/>
+
+        <!--  Name Value -->
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- Address Label -->
+        <TextView
+            android:text="Address:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:layout_marginBottom="5dip"
+            android:textStyle="bold"/>
+
+        <!--  Address Value -->
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- Phone Number Label -->
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"/>
+
+
+        <!-- Location Value -->
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:layout_marginBottom="5dip"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
+

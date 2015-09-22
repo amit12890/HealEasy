@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/medical_bkg"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99ffffff"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark">
+
+
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="HealEasy"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:textSize="20sp"
+                />
+
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_upper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lay_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/lay_hospitals"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:orientation="vertical"
+            android:background="#01AEF0"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/ic_hospitals"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="HOSPITALS"
+                android:textSize="16sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_pharmacy"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:orientation="vertical"
+            android:background="#01AEF0"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/ic_pharmacy"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="PHARMACY"
+                android:textSize="16sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_below"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/lay_upper"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:id="@+id/lay_labs"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:orientation="vertical"
+            android:background="#01AEF0"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_laboratory"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="DIAGNOSTIC CENTER"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_medical_equipment"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:orientation="vertical"
+            android:background="#01AEF0"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_equipments"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="MEDICAL EQUIPMENT"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold"
+                android:layout_marginBottom="5dp"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_health_planner"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:orientation="vertical"
+        android:background="#01AEF0"
+        android:layout_below="@+id/lay_below"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_planner"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="HEALTH PLANNER"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lay_social"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/facebook_icon"
+            android:layout_marginRight="10dp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/gplus_icon"
+            android:layout_marginRight="10dp"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/twitter_icon"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
