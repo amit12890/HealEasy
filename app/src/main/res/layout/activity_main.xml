@@ -75,12 +75,33 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/lay_loading"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <com.rey.material.widget.ProgressView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:pv_circular="true"
+            app:pv_autostart="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="#212121"
+            android:text="Loading..."/>
+        </LinearLayout>
     <!--  List view -->
     <com.rey.material.widget.ListView
         android:id="@+id/list"
         android:layout_marginTop="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/lay_loading"
         android:layout_below="@id/lay_search"/>
     
     <TextView

@@ -29,8 +29,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -188,7 +186,7 @@ public class Utility {
             ResponseHandler<String> handler = new BasicResponseHandler();
             response = client.execute(request, handler);
 
-            client.getConnectionManager().shutdown();
+            //client.getConnectionManager().shutdown();
             Log.d("Place Details", response);
             return response;
 

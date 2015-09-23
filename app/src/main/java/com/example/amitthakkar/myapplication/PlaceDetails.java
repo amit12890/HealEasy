@@ -17,7 +17,9 @@ public class PlaceDetails implements Serializable {
     public String price = "";
     public String address = "";
     public String vicinity = "";
-    public String reviews = "";
+    public int reviews = 0;
+    public int rating = 0;
+    public float distance = 0;
     public String hours = "";
     public String latitude = "";
 
@@ -95,11 +97,11 @@ public class PlaceDetails implements Serializable {
         this.vicinity = vicinity;
     }
 
-    public String getReviews() {
+    public int getReviews() {
         return reviews;
     }
 
-    public void setReviews(String reviews) {
+    public void setReviews(int reviews) {
         this.reviews = reviews;
     }
 
@@ -146,4 +148,19 @@ public class PlaceDetails implements Serializable {
         this.phone = phone;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
 }
