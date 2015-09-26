@@ -41,10 +41,9 @@ import se.walkercrou.places.Param;
 import se.walkercrou.places.Place;
 import se.walkercrou.places.exception.NoResultsFoundException;
 
-public class PlaceListActivity extends AppCompatActivity implements  GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class PlaceListActivity extends AppCompatActivity  {
 
-    private GoogleApiClient mGoogleApiClient;
+
     private String latitude,longitude;
     GooglePlaces gPlace;
     Utility util;
@@ -61,19 +60,13 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
     private boolean is_loading_list =false;
     PlaceListAdapter placeListAdapter;
     LinearLayout layLoading ;
+    String query;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(PlaceListActivity.this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
 
         util = new Utility(PlaceListActivity.this);
         type = getIntent().getStringExtra("place_type");
@@ -91,7 +84,7 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
 
         String hintType = AppController.placeTypeMap.get(type);
         hintType = String.valueOf(hintType.charAt(0)).toUpperCase() + hintType.substring(1, hintType.length()).toLowerCase();
-        edSearch.setHint("Search "+ hintType);
+        edSearch.setHint("Search " + hintType);
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -104,7 +97,8 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
                     placesList.clear();
                     placesDetailList.clear();
                     PAGE_TOKEN = "";
-                    getPlacesList("Ahmedabad", PAGE_TOKEN);
+                    query = getCityName(AppController.LATITUDE,AppController.LONGITUDE);
+                    getPlacesList(query,PAGE_TOKEN);
                 }
             }
 
@@ -122,7 +116,8 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
                 placesList.clear();
                 placesDetailList.clear();
                 PAGE_TOKEN = "";
-                getPlacesList(edSearch.getText().toString(), PAGE_TOKEN);
+                query = edSearch.getText().toString();
+                getPlacesList(query, PAGE_TOKEN);
             }
         });
 
@@ -153,9 +148,9 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
                         h.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                getPlacesList("Ahmedabad", PAGE_TOKEN);
+                                getPlacesList(query, PAGE_TOKEN);
                             }
-                        },3000);
+                        }, 3000);
 
                         is_loading_list = true;
                         layLoading.setVisibility(View.VISIBLE);
@@ -168,35 +163,11 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
 
         placeListView.setAdapter(placeListAdapter);
 
+        query = getCityName(AppController.LATITUDE,AppController.LONGITUDE);
+        getPlacesList(query, PAGE_TOKEN);
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d("TAG", "Connected");
 
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        if (mLastLocation != null) {
-            AppController.LATITUDE = mLastLocation.getLatitude();
-            AppController.LONGITUDE = mLastLocation.getLongitude();
-            String city = getCityName(mLastLocation.getLatitude(),mLastLocation.getLongitude());
-            getPlacesList(city,PAGE_TOKEN);
-            return;
-
-        }
-        getPlacesList("Ahmedabad", PAGE_TOKEN);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d("TAG", "Suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d("TAG", "Failed");
-    }
 
     private void getPlacesList(final String query,final String page_token) {
         final ArrayList<PlaceDetails> tempArrayList = new ArrayList<>();
@@ -293,27 +264,24 @@ public class PlaceListActivity extends AppCompatActivity implements  GoogleApiCl
             placeDetails.setAddress(areaObj.getString("formatted_address"));
             placeDetails.setLatitude(areaObj.getJSONObject("geometry").getJSONObject("location").getString("lat"));
             placeDetails.setLongitude(areaObj.getJSONObject("geometry").getJSONObject("location").getString("lng"));
+
+            Location homeLocation = new Location("");
+            homeLocation.setLatitude(AppController.LATITUDE);
+            homeLocation.setLongitude(AppController.LONGITUDE);
+
+            Location placeLocation = new Location("");
+            placeLocation.setLatitude(Double.parseDouble(placeDetails.getLatitude()));
+            placeLocation.setLongitude(Double.parseDouble(placeDetails.getLongitude()));
+
+            placeDetails.setDistance(homeLocation.distanceTo(placeLocation) / 1000);
+
         }catch (JSONException e){
             e.printStackTrace();
         }
         return  placeDetails;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
 
     public String getCityName(Double latitude,Double longitude){
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());

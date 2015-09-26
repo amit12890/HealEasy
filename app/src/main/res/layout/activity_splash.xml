@@ -11,7 +11,122 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/lay_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true">
+        <TextView
+            android:id="@+id/txt_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:textColor="#8FC54D"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="H"/>
+
+        <TextView
+            android:id="@+id/txt_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#8FC54D"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="e"/>
+
+        <TextView
+            android:id="@+id/txt_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#8FC54D"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="a"/>
+
+        <TextView
+            android:id="@+id/txt_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#8FC54D"
+            android:text="l"/>
+
+        <TextView
+            android:id="@+id/txt_ee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#00B1F6"
+            android:textStyle="bold"
+            android:text="E"/>
+
+        <TextView
+            android:id="@+id/txt_ea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#00B1F6"
+            android:textStyle="bold"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="a"/>
+
+        <TextView
+            android:id="@+id/txt_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textColor="#00B1F6"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="s"/>
+        <TextView
+            android:id="@+id/txt_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:visibility="visible"
+            android:textColor="#00B1F6"
+            android:textStyle="bold"
+            android:shadowColor="#00193F"
+            android:shadowDx="-2"
+           
+            android:shadowRadius="1"
+            android:text="Y"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/symbol"
+        android:layout_above="@id/lay_symbol"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"/>
 
 
 

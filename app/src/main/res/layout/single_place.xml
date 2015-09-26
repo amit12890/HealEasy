@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/medical_bkg"
-            android:visibility="gone"
             android:scaleType="centerCrop"
-            />
+            android:src="@drawable/medical_bkg"
+            android:visibility="gone" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#99ffffff"/>
+            android:background="#99ffffff" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/lay_title"
         android:layout_width="match_parent"
@@ -31,19 +31,19 @@
             android:id="@+id/img_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/back_arrow"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back_arrow" />
 
         <ImageView
             android:id="@+id/img_save"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/save_while"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:src="@drawable/save_while" />
 
         <TextView
             android:id="@+id/txt_title"
@@ -55,164 +55,170 @@
             android:singleLine="true"
             android:text="Place Detail"
             android:textColor="@color/primary_text"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
 
-   <RelativeLayout
-       android:id="@+id/lay_details"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_below="@id/lay_title">
+    <RelativeLayout
+        android:id="@+id/lay_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:layout_marginTop="?attr/actionBarSize">
 
-       <fragment
-           android:id="@+id/map"
-           android:name="com.google.android.gms.maps.MapFragment"
-           android:layout_width="match_parent"
-           android:layout_height="200dp" />
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
-       <ScrollView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_below="@+id/map">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:orientation="vertical"
-               android:padding="10dip">
-
-
-               <!-- Name Label -->
-               <TextView
-                   android:text="Name:"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="10dip"
-                   android:layout_marginBottom="5dip"
-                   android:textStyle="bold"/>
-
-               <!--  Name Value -->
-               <TextView
-                   android:id="@+id/name"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"/>
-
-               <!-- Address Label -->
-               <TextView
-                   android:text="Address:"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="5dip"
-                   android:layout_marginBottom="5dip"
-                   android:textStyle="bold"/>
-
-               <!--  Address Value -->
-
-               <TextView
-                   android:id="@+id/address"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"/>
-
-               <TextView
-                   android:id="@+id/distance"
-                   android:layout_width="fill_parent"
-                   android:textStyle="italic"
-                   android:layout_height="wrap_content"/>
-
-               <!-- Phone Number Label -->
-
-               <TextView
-                   android:text="Phone Number:"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="5dip"
-                   android:layout_marginBottom="5dip"
-                   android:textStyle="bold"/>
-
-               <TextView
-                   android:id="@+id/phone"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="0dip"/>
-
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="horizontal">
-
-                   <LinearLayout
-                       android:layout_width="0dp"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical"
-                       android:layout_weight="1">
-                       <TextView
-                           android:text="Rating:"
-                           android:layout_width="fill_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="10dip"
-                           android:layout_marginBottom="5dip"
-                           android:textStyle="bold"/>
-
-                       <TextView
-                           android:id="@+id/rating"
-                           android:layout_width="fill_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="0dip"/>
-                   </LinearLayout>
-
-                   <LinearLayout
-                       android:layout_width="0dp"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical"
-                       android:layout_weight="1">
-                       <TextView
-                           android:text="Reviews:"
-                           android:layout_width="fill_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="10dip"
-                           android:layout_marginBottom="5dip"
-                           android:textStyle="bold"/>
-
-                       <TextView
-                           android:id="@+id/review"
-                           android:layout_width="fill_parent"
-                           android:layout_height="wrap_content"
-                           android:layout_marginTop="0dip"/>
-                   </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dip">
 
 
+                <!-- Name Label -->
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="10dip"
+                    android:text="Name:"
+                    android:textStyle="bold" />
+
+                <!--  Name Value -->
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <!-- Address Label -->
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Address:"
+                    android:textStyle="bold" />
+
+                <!--  Address Value -->
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic" />
+
+                <!-- Phone Number Label -->
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="5dip"
+                    android:text="Phone Number:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dip" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dip"
+                            android:layout_marginTop="10dip"
+                            android:text="Rating:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/rating"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dip" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dip"
+                            android:layout_marginTop="10dip"
+                            android:text="Reviews:"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/review"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dip" />
+                    </LinearLayout>
 
 
-               </LinearLayout>
+                </LinearLayout>
 
-               <!-- Location Value -->
-               <TextView
-                   android:id="@+id/location"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_marginTop="10dip"
-                   android:layout_marginBottom="5dip"
-                   android:visibility="gone"/>
-
-
-           </LinearLayout>
-
-       </ScrollView>
+                <!-- Location Value -->
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginTop="10dip"
+                    android:visibility="gone" />
 
 
-   </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
 
 
+    </RelativeLayout>
 
-    <fragment
-        android:id="@+id/map_full"
-        android:layout_below="@+id/lay_title"
-        android:name="com.google.android.gms.maps.MapFragment"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_below="@+id/lay_title"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/map_full"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
 

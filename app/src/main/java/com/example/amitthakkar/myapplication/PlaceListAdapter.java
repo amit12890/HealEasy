@@ -49,7 +49,7 @@ public class PlaceListAdapter extends ArrayAdapter<PlaceDetails> {
 
     public class Holder
     {
-        TextView txtName,txtPhone;
+        TextView txtName,txtDistance;
         ImageView img;
     }
     @Override
@@ -59,10 +59,12 @@ public class PlaceListAdapter extends ArrayAdapter<PlaceDetails> {
         View rowView = inflater.inflate(R.layout.list_item, null);
 
         holder.txtName = (TextView) rowView.findViewById(R.id.txt_name);
-        holder.txtPhone =(TextView) rowView.findViewById(R.id.txt_phone);
+        holder.txtDistance =(TextView) rowView.findViewById(R.id.txt_distance);
 
+        float distance = placeArrayList.get(position).getDistance();
+        String distance_string = String.format("%.02f", distance);
         holder.txtName.setText(placeArrayList.get(position).getName());
-        holder.txtPhone.setText(placeArrayList.get(position).getPhone());
+        holder.txtDistance.setText("Distance : "+ distance_string +" KM away");
 
         return rowView;
     }

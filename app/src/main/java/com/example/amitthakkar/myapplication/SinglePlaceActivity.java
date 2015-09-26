@@ -6,14 +6,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.amitthakkar.myapplication.utility.Utility;
@@ -30,6 +34,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+
 import se.walkercrou.places.Place;
 
 public class SinglePlaceActivity extends Activity implements OnMapReadyCallback {
@@ -41,6 +52,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	private ImageView imgBack,imgSave;
 	private boolean isMapFullScreen = false;
 	private GoogleMap gMap;
+	private PolylineOptions poly;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +79,10 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		imgBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(isMapFullScreen){
+				if (isMapFullScreen) {
 					fullMapFragment.getView().setVisibility(View.GONE);
-				}else{
-					finish();
+				} else {
+					onBackPressed();
 				}
 
 			}
@@ -85,6 +97,12 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		});
 
 		imgSave = (ImageView) findViewById(R.id.img_save);
+		imgSave.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				takeScreenShot();
+			}
+		});
 
 		latitude = place.getLatitude();
 		longitude = place.getLongitude();
@@ -145,9 +163,16 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 13));
 
 		googleMap.addMarker(new MarkerOptions()
-				.title(place.getAddress().replace(",","\n"))
+				.title(place.getAddress().replace(",", "\n"))
 				.position(current));
 		gMap = googleMap;
+
+		poly = new PolylineOptions()
+				.color(Color.RED)
+				.width(5)
+				.visible(true)
+				.zIndex(30);
+		gMap.addPolyline(poly);
 
 
 	}
@@ -184,15 +209,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 			else
 				place.setReviews(0);
 
-			Location homeLocation = new Location("");
-			homeLocation.setLatitude(AppController.LATITUDE);
-			homeLocation.setLongitude(AppController.LONGITUDE);
 
-			Location placeLocation = new Location("");
-			placeLocation.setLatitude(Double.parseDouble(place.getLatitude()));
-			placeLocation.setLongitude(Double.parseDouble(place.getLongitude()));
-
-			place.setDistance(homeLocation.distanceTo(placeLocation)/1000);
 
 			runOnUiThread(new Runnable() {
 				@Override
@@ -219,23 +236,41 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		lbl_name.setText(place.getName());
 		lbl_address.setText(place.getAddress().replace(",", "\n"));
 		lbl_phone.setText(place.getPhone());
-		lbl_distance.setText("Distance: "+String.valueOf(place.getDistance())+" KM AWAY");
+
 		lbl_rating.setText(String.valueOf(place.getRating()));
 		lbl_review.setText(String.valueOf(place.getReviews()));
 
+		float distance = place.getDistance();
+		String distance_string = String.format("%.02f", distance);
+		lbl_distance.setText("Distance: " + distance_string + " KM AWAY");
+
 		//gMap.clear();
-		Polyline line = gMap.addPolyline(new PolylineOptions()
+		/*Polyline line = gMap.addPolyline(new PolylineOptions()
 				.add(new LatLng(Double.parseDouble(place.getLatitude()),Double.parseDouble(place.getLongitude())),
 						new LatLng(AppController.LATITUDE, AppController.LONGITUDE))
 				.width(10)
-				.color(Color.BLUE));
+				.color(Color.BLUE));*/
+
+		PolylineOptions poly = new PolylineOptions()
+				.color(Color.BLUE)
+				.width(5)
+				.visible(true)
+				.zIndex(30);
+		gMap.addPolyline(poly);
+		poly.add(new LatLng(22.69391261, 72.85596371));
+		poly.add(new LatLng(22.69178, 72.8678));
+
+		Polyline line = gMap.addPolyline(new PolylineOptions()
+				.add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
+				.width(5)
+				.color(Color.RED));
 
 
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
+	public void onBackPressed() {
+		super.onBackPressed();
 		FragmentManager fm = getFragmentManager();
 		Fragment fragment = (fm.findFragmentById(R.id.map));
 		FragmentTransaction ft = fm.beginTransaction();
@@ -246,5 +281,87 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		FragmentTransaction ft1 = fm.beginTransaction();
 		ft1.remove(fragment1);
 		ft1.commit();
+	}
+
+
+	public void takeScreenShot(){
+		Date now = new Date();
+		android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+		try {
+			// image naming and path  to include sd card  appending name you choose for file
+			String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+					"/HealEasy";
+			Long tsLong = System.currentTimeMillis()/1000;
+			String ts = tsLong.toString();
+
+			File dir = new File(file_path);
+			if(!dir.exists())
+				dir.mkdirs();
+			File imageFile = new File(dir, "HealEasy_" + ts + ".jpg");
+
+			// create bitmap screen capture
+			//View v1 = getWindow().getDecorView().getRootView();
+			View v1 = findViewById(R.id.lay_details);
+			v1.setDrawingCacheEnabled(true);
+			v1.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+			//v1.layout(0, 0, v1.getMeasuredWidth(), v1.getMeasuredHeight());
+			v1.buildDrawingCache(true);
+
+			mapFragment.getView().buildDrawingCache();
+			mapFragment.getView().setDrawingCacheEnabled(true);
+			mapFragment.getView().measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+			Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+
+			FileOutputStream outputStream = new FileOutputStream(imageFile);
+			int quality = 100;
+			bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+			outputStream.flush();
+			outputStream.close();
+
+			v1.destroyDrawingCache();
+
+			openScreenshot(imageFile);
+		} catch (Throwable e) {
+			// Several error may come out with file handling or OOM
+			e.printStackTrace();
+		}
+	}
+
+	private void openScreenshot(File imageFile) {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_VIEW);
+		Uri uri = Uri.fromFile(imageFile);
+		intent.setDataAndType(uri, "image/*");
+		startActivity(intent);
+	}
+
+	private File saveBitmapAsFile(Bitmap bmp){
+		String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+				"/HealEasy";
+		Long tsLong = System.currentTimeMillis()/1000;
+		String ts = tsLong.toString();
+
+		File dir = new File(file_path);
+		if(!dir.exists())
+			dir.mkdirs();
+		File file = new File(dir, "HealEasy_" + ts + ".png");
+		FileOutputStream fOut = null;
+		try {
+			fOut = new FileOutputStream(file);
+			bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+			fOut.flush();
+			fOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+		return dir;
 	}
 }
