@@ -49,7 +49,7 @@ public class PlaceListActivity extends AppCompatActivity  {
     Utility util;
     String type = "hospital";
     private List<Place> placesList;
-    private ArrayList<PlaceDetails> placesDetailList;
+    private ArrayList<PlaceDetails> placesDetailList,tempArrayList;
     private ListView placeListView;
     private EditText edSearch;
     private ImageView imgSearch;
@@ -74,6 +74,7 @@ public class PlaceListActivity extends AppCompatActivity  {
         placeDetails = new PlaceDetails();
         placesList = new ArrayList<>();
         placesDetailList = new ArrayList<>();
+        tempArrayList = new ArrayList<>();
         placeListAdapter = new PlaceListAdapter(PlaceListActivity.this,R.id.list_item,placesDetailList);
 
         layLoading = (LinearLayout) findViewById(R.id.lay_loading);
@@ -124,8 +125,9 @@ public class PlaceListActivity extends AppCompatActivity  {
         placeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PlaceDetails place = placesDetailList.get(position);
+                PlaceDetails place = (PlaceDetails) placeListView.getItemAtPosition(position);
                 //clonePlaceObject(place);
+
                 Intent i = new Intent(PlaceListActivity.this, SinglePlaceActivity.class);
                 i.putExtra("place", place);
                 startActivity(i);
@@ -170,7 +172,7 @@ public class PlaceListActivity extends AppCompatActivity  {
 
 
     private void getPlacesList(final String query,final String page_token) {
-        final ArrayList<PlaceDetails> tempArrayList = new ArrayList<>();
+        tempArrayList.clear();
         if(page_token.length() == 0)
             util.showLoadingDialog("Please Wait");
         Thread t = new Thread(new Runnable() {
@@ -196,11 +198,11 @@ public class PlaceListActivity extends AppCompatActivity  {
                                     for (int i = 0; i < resultsArray.length(); i++) {
                                         JSONObject resultObj = resultsArray.getJSONObject(i);
                                         tempArrayList.add(parsePlaces(resultObj));
-                                        placesDetailList.add(parsePlaces(resultObj));
+
                                     }
                                 }else{
                                     JSONObject resultObj = responseObj.getJSONObject("results");
-                                    placesDetailList.add(parsePlaces(resultObj));
+                                    //placesDetailList.add(parsePlaces(resultObj));
                                     tempArrayList.add(parsePlaces(resultObj));
                                 }
 
@@ -211,6 +213,7 @@ public class PlaceListActivity extends AppCompatActivity  {
                                         placeListAdapter.addAll(tempArrayList);
                                         //placeListView.setAdapter(placeListAdapter);
                                         placeListAdapter.notifyDataSetChanged();
+                                        //placesDetailList.addAll(tempArrayList);
                                         txtNoData.setVisibility(View.GONE);
                                         is_loading_list = false;
                                         layLoading.setVisibility(View.GONE);
@@ -281,8 +284,6 @@ public class PlaceListActivity extends AppCompatActivity  {
         return  placeDetails;
     }
 
-
-
     public String getCityName(Double latitude,Double longitude){
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
@@ -296,6 +297,7 @@ public class PlaceListActivity extends AppCompatActivity  {
         String stateName = addresses.get(0).getAddressLine(1);
         String countryName = addresses.get(0).getAddressLine(2);
 
-        return addresses.get(0).getSubAdminArea();
+        return addresses.get(0).getLocality();
     }
+
 }

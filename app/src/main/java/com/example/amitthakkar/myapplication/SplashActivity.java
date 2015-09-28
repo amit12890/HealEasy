@@ -213,4 +213,5 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
     public void onAnimationRepeat(Animation animation) {
 
     }
+
 }

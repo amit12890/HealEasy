@@ -5,21 +5,27 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.amitthakkar.myapplication.utility.JSONParser;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +46,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import se.walkercrou.places.Place;
 
@@ -49,10 +60,12 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	Utility utility;
 	private String latitude,longitude;
 	private MapFragment mapFragment,fullMapFragment;
-	private ImageView imgBack,imgSave;
+	private ImageView imgBack,imgSave, imgWhatsApp, imgFullScreen;
+	private RelativeLayout layFullScreen;
 	private boolean isMapFullScreen = false;
 	private GoogleMap gMap;
 	private PolylineOptions poly;
+	private boolean isWhatsApp = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +80,8 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 				.findFragmentById(R.id.map);
 		fullMapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map_full);
-		fullMapFragment.getView().setVisibility(View.GONE);
+		fullMapFragment.getView().setVisibility(View.VISIBLE);
+		layFullScreen = (RelativeLayout)findViewById(R.id.lay_fullscreen);
 
 		GoogleMapOptions options = new GoogleMapOptions();
 		options.zoomControlsEnabled(true)
@@ -80,7 +94,8 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 			@Override
 			public void onClick(View v) {
 				if (isMapFullScreen) {
-					fullMapFragment.getView().setVisibility(View.GONE);
+					layFullScreen.setVisibility(View.GONE);
+					isMapFullScreen = false;
 				} else {
 					onBackPressed();
 				}
@@ -100,7 +115,35 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		imgSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				takeScreenShot();
+				if(isMapFullScreen){
+					takeScreenShot(R.id.lay_fullscreen,fullMapFragment);
+				}else {
+					takeScreenShot(R.id.lay_details,mapFragment);
+				}
+			}
+		});
+
+		imgWhatsApp = (ImageView) findViewById(R.id.img_whatsapp);
+		imgWhatsApp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				isWhatsApp = true;
+				if(isMapFullScreen){
+					takeScreenShot(R.id.lay_fullscreen,fullMapFragment);
+				}else {
+					takeScreenShot(R.id.lay_details,mapFragment);
+				}
+
+
+			}
+		});
+
+		imgFullScreen = (ImageView) findViewById(R.id.img_fullscreen);
+		imgFullScreen.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				layFullScreen.setVisibility(View.VISIBLE);
+				isMapFullScreen = true;
 			}
 		});
 
@@ -129,6 +172,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 							if(jsonObject.has("result")){
 								JSONObject resultObj = jsonObject.getJSONObject("result");
 								parseResultObj(resultObj);
+
 							}
 						}
 					}
@@ -165,14 +209,14 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		googleMap.addMarker(new MarkerOptions()
 				.title(place.getAddress().replace(",", "\n"))
 				.position(current));
-		gMap = googleMap;
+		gMap = mapFragment.getMap();
 
 		poly = new PolylineOptions()
 				.color(Color.RED)
 				.width(5)
 				.visible(true)
 				.zIndex(30);
-		gMap.addPolyline(poly);
+		//gMap.addPolyline(poly);
 
 
 	}
@@ -215,6 +259,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 				@Override
 				public void run() {
 					fillPlaceDetails();
+					showDirection();
 				}
 			});
 
@@ -251,84 +296,92 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 				.width(10)
 				.color(Color.BLUE));*/
 
+		ArrayList<LatLng> arrayList = new ArrayList<>();
+		arrayList.add(new LatLng(Double.parseDouble(place.getLatitude()),Double.parseDouble(place.getLongitude())));
+		arrayList.add(new LatLng(AppController.LATITUDE, AppController.LONGITUDE));
 		PolylineOptions poly = new PolylineOptions()
 				.color(Color.BLUE)
 				.width(5)
 				.visible(true)
 				.zIndex(30);
-		gMap.addPolyline(poly);
-		poly.add(new LatLng(22.69391261, 72.85596371));
-		poly.add(new LatLng(22.69178, 72.8678));
-
-		Polyline line = gMap.addPolyline(new PolylineOptions()
-				.add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
-				.width(5)
-				.color(Color.RED));
+		poly.addAll(arrayList);
+		//gMap.addPolyline(poly);
+		//mapFragment.getMap().addPolyline(poly);
 
 
 	}
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		FragmentManager fm = getFragmentManager();
-		Fragment fragment = (fm.findFragmentById(R.id.map));
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.remove(fragment);
-		ft.commit();
 
-		Fragment fragment1 = (fm.findFragmentById(R.id.map_full));
-		FragmentTransaction ft1 = fm.beginTransaction();
-		ft1.remove(fragment1);
-		ft1.commit();
+		if(isMapFullScreen){
+			layFullScreen.setVisibility(View.GONE);
+			isMapFullScreen = false;
+		}else {
+			super.onBackPressed();
+			FragmentManager fm = getFragmentManager();
+			Fragment fragment = (fm.findFragmentById(R.id.map));
+			FragmentTransaction ft = fm.beginTransaction();
+			ft.remove(fragment);
+			ft.commit();
+
+			Fragment fragment1 = (fm.findFragmentById(R.id.map_full));
+			FragmentTransaction ft1 = fm.beginTransaction();
+			ft1.remove(fragment1);
+			ft1.commit();
+		}
+
 	}
 
 
-	public void takeScreenShot(){
-		Date now = new Date();
-		android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+	public void takeScreenShot(final int layout_id,MapFragment mapFragment){
 
-		try {
-			// image naming and path  to include sd card  appending name you choose for file
-			String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-					"/HealEasy";
-			Long tsLong = System.currentTimeMillis()/1000;
-			String ts = tsLong.toString();
+		GoogleMap gmap = mapFragment.getMap();
+		GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback()
+		{
+			@Override
+			public void onSnapshotReady(Bitmap snapshot) {
+				try {
 
-			File dir = new File(file_path);
-			if(!dir.exists())
-				dir.mkdirs();
-			File imageFile = new File(dir, "HealEasy_" + ts + ".jpg");
+					View v1 = findViewById(layout_id);
+					v1.setDrawingCacheEnabled(true);
+					Bitmap backBitmap = Bitmap.createBitmap(v1.getDrawingCache());
+					Bitmap bmOverlay = Bitmap.createBitmap(
+							backBitmap.getWidth(), backBitmap.getHeight(),
+							backBitmap.getConfig());
 
-			// create bitmap screen capture
-			//View v1 = getWindow().getDecorView().getRootView();
-			View v1 = findViewById(R.id.lay_details);
-			v1.setDrawingCacheEnabled(true);
-			v1.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-			//v1.layout(0, 0, v1.getMeasuredWidth(), v1.getMeasuredHeight());
-			v1.buildDrawingCache(true);
+					Canvas canvas = new Canvas(bmOverlay);
+					canvas.drawBitmap(backBitmap, 0, 0, null);
+					canvas.drawBitmap(snapshot, new Matrix(), null);
 
-			mapFragment.getView().buildDrawingCache();
-			mapFragment.getView().setDrawingCacheEnabled(true);
-			mapFragment.getView().measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+					String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() +
+							"/HealEasy";
+					Long tsLong = System.currentTimeMillis()/1000;
+					String ts = tsLong.toString();
 
-			Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+					File dir = new File(filePath);
+					if(!dir.exists())
+						dir.mkdirs();
+					File imageFile = new File(dir, "HealEasy_" + ts + ".png");
 
-			FileOutputStream outputStream = new FileOutputStream(imageFile);
-			int quality = 100;
-			bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-			outputStream.flush();
-			outputStream.close();
+					FileOutputStream out = new FileOutputStream(imageFile);
 
-			v1.destroyDrawingCache();
+					bmOverlay.compress(Bitmap.CompressFormat.PNG, 90, out);
 
-			openScreenshot(imageFile);
-		} catch (Throwable e) {
-			// Several error may come out with file handling or OOM
-			e.printStackTrace();
-		}
+					if(isWhatsApp)
+						shareOnWhatsApp(imageFile);
+					else
+						openScreenshot(imageFile);
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+
+		gmap.snapshot(callback);
+
 	}
 
 	private void openScreenshot(File imageFile) {
@@ -339,29 +392,128 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		startActivity(intent);
 	}
 
-	private File saveBitmapAsFile(Bitmap bmp){
-		String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-				"/HealEasy";
-		Long tsLong = System.currentTimeMillis()/1000;
-		String ts = tsLong.toString();
+	private void shareOnWhatsApp(File file){
 
-		File dir = new File(file_path);
-		if(!dir.exists())
-			dir.mkdirs();
-		File file = new File(dir, "HealEasy_" + ts + ".png");
-		FileOutputStream fOut = null;
+		isWhatsApp = false;
+		URI uri = file.toURI();
+
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n"));
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_STREAM,uri);
+		intent.setType("image/jpeg");
+		intent.setPackage("com.whatsapp");
+		startActivity(intent);
+	}
+
+
+	//Code for making direction API call and get all route between two points
+
+	public void showDirection() {
+		//utility.showLoadingDialog("Please Wait");
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				JSONParser jParser = new JSONParser();
+				final String json = jParser.getJSONFromUrl(makeURL(AppController.LATITUDE, AppController.LONGITUDE,
+						Double.parseDouble(place.getLatitude()), Double.parseDouble(place.getLongitude())));
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						//Log.d("Tag", response);
+						utility.hideLoadingDialog();
+						if (json != null) {
+							drawPath(json.toString(),mapFragment.getMap());
+							drawPath(json.toString(),fullMapFragment.getMap());
+						}
+					}
+				});
+
+
+			}
+		});
+		if (utility.isNetworkAvailable(SinglePlaceActivity.this, utility)) {
+			t.start();
+
+		}
+	}
+
+	public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
+		StringBuilder urlString = new StringBuilder();
+		urlString.append("https://maps.googleapis.com/maps/api/directions/json");
+		urlString.append("?origin=");// from
+		urlString.append(Double.toString(sourcelat));
+		urlString.append(",");
+		urlString
+				.append(Double.toString(sourcelog));
+		urlString.append("&destination=");// to
+		urlString
+				.append(Double.toString(destlat));
+		urlString.append(",");
+		urlString.append(Double.toString(destlog));
+		urlString.append("&sensor=false&mode=driving&alternatives=true");
+		urlString.append("&key="+AppController.API_KEY);
+		return urlString.toString();
+	}
+
+
+	public void drawPath(String  result,GoogleMap mMap) {
+
 		try {
-			fOut = new FileOutputStream(file);
-			bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-			fOut.flush();
-			fOut.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			//Tranform the string into a json object
+			final JSONObject json = new JSONObject(result);
+			JSONArray routeArray = json.getJSONArray("routes");
+			JSONObject routes = routeArray.getJSONObject(0);
+			JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
+			String encodedString = overviewPolylines.getString("points");
+			List<LatLng> list = decodePoly(encodedString);
+			Polyline line = mMap.addPolyline(new PolylineOptions()
+							.addAll(list)
+							.width(12)
+							.color(Color.parseColor("#E61A5F"))//Google maps blue color
+							.geodesic(true)
+			);
+
+		}
+		catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
-		return dir;
 	}
+
+	private List<LatLng> decodePoly(String encoded) {
+
+		List<LatLng> poly = new ArrayList<LatLng>();
+		int index = 0, len = encoded.length();
+		int lat = 0, lng = 0;
+
+		while (index < len) {
+			int b, shift = 0, result = 0;
+			do {
+				b = encoded.charAt(index++) - 63;
+				result |= (b & 0x1f) << shift;
+				shift += 5;
+			} while (b >= 0x20);
+			int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+			lat += dlat;
+
+			shift = 0;
+			result = 0;
+			do {
+				b = encoded.charAt(index++) - 63;
+				result |= (b & 0x1f) << shift;
+				shift += 5;
+			} while (b >= 0x20);
+			int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+			lng += dlng;
+
+			LatLng p = new LatLng( (((double) lat / 1E5)),
+					(((double) lng / 1E5) ));
+			poly.add(p);
+		}
+
+		return poly;
+	}
+
 }

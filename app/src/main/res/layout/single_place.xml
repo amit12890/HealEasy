@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,6 +46,15 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/save_while" />
 
+        <ImageView
+            android:id="@+id/img_whatsapp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/whatsapp"
+            android:layout_toLeftOf="@+id/img_save"/>
+
         <TextView
             android:id="@+id/txt_title"
             android:layout_width="wrap_content"
@@ -73,7 +83,21 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
+
+        <ImageView
+            android:id="@+id/img_fullscreen"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="7dp"
+            android:background="#ffffff"
+            android:src="@drawable/fullscreen"
+            android:layout_above="@+id/scrollview"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp" />
+
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/map">
@@ -90,7 +114,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dip"
-                    android:layout_marginTop="10dip"
                     android:text="Name:"
                     android:textStyle="bold" />
 
@@ -147,10 +170,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dip"
                             android:layout_marginTop="10dip"
@@ -159,19 +182,20 @@
 
                         <TextView
                             android:id="@+id/rating"
-                            android:layout_width="fill_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="0dip" />
+                            android:layout_marginTop="10dip"
+                            android:text="5"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="fill_parent"
+                            android:layout_width="75dp"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dip"
                             android:layout_marginTop="10dip"
@@ -182,7 +206,8 @@
                             android:id="@+id/review"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="0dip" />
+                            android:text="5"
+                            android:layout_marginTop="10dip" />
                     </LinearLayout>
 
 
@@ -207,9 +232,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/lay_fullscreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/lay_title"
+        android:background="#ffffff"
         android:visibility="gone">
 
         <fragment
