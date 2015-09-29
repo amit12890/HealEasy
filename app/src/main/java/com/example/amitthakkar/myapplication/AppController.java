@@ -31,12 +31,10 @@ public class AppController extends Application{
     public static HashMap<String,String> GOOGLE_P_DETAILS;
     public static HashMap<String,String> LINKED_IN_DETAILS;
     public static String PRIMARY_COLOR="",SECONDARY_COLOR="";
-    public static double LATITUDE=23.022505,LONGITUDE=72.5713621,RADIUS= 5000;
+    public static double RADIUS= 5000;
     public static String URI = "https://maps.googleapis.com/maps/api/";
     public static String API_KEY = "AIzaSyABRDkeNFSEG-0QrbUfIdqxD9VRXBEXuD8";
     public static HashMap<String,String> placeTypeMap = new HashMap<>();
-
-
 
     private static AppController mInstance;
 

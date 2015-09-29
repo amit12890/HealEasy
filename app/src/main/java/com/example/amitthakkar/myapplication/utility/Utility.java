@@ -176,7 +176,7 @@ public class Utility {
         try {
             if(page_token.length() > 0){
                 request = new HttpGet(AppController.URI+"place/textsearch/json?query="+query+"&pagetoken="+
-                        page_token+"&key="+ AppController.API_KEY);
+                        page_token+"&rankby=distance&key="+ AppController.API_KEY);
             }else{
                 request = new HttpGet(AppController.URI+"place/textsearch/json?query="+query+"&key="+ AppController.API_KEY);
             }

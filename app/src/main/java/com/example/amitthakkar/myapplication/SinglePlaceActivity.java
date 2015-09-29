@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.amitthakkar.myapplication.utility.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.JSONParser;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,6 +68,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	private GoogleMap gMap;
 	private PolylineOptions poly;
 	private boolean isWhatsApp = false;
+	private AppPreferences preferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		setContentView(R.layout.single_place);
 
 		place = (PlaceDetails) getIntent().getSerializableExtra("place");
-
+		preferences = new AppPreferences(SinglePlaceActivity.this);
 
 		mapFragment = (MapFragment) getFragmentManager()
 				.findFragmentById(R.id.map);
@@ -124,6 +127,11 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		});
 
 		imgWhatsApp = (ImageView) findViewById(R.id.img_whatsapp);
+		if(isPackageInstalled("com.whatsapp"))
+			imgWhatsApp.setVisibility(View.VISIBLE);
+		else
+			imgWhatsApp.setVisibility(View.INVISIBLE);
+
 		imgWhatsApp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -298,7 +306,6 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 		ArrayList<LatLng> arrayList = new ArrayList<>();
 		arrayList.add(new LatLng(Double.parseDouble(place.getLatitude()),Double.parseDouble(place.getLongitude())));
-		arrayList.add(new LatLng(AppController.LATITUDE, AppController.LONGITUDE));
 		PolylineOptions poly = new PolylineOptions()
 				.color(Color.BLUE)
 				.width(5)
@@ -395,18 +402,28 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	private void shareOnWhatsApp(File file){
 
 		isWhatsApp = false;
-		URI uri = file.toURI();
+		Uri uri = Uri.fromFile(file);
 
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n"));
 		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_STREAM,uri);
-		intent.setType("image/jpeg");
+		intent.setType("image/*");
+		intent.putExtra(Intent.EXTRA_STREAM, uri);
 		intent.setPackage("com.whatsapp");
+		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		startActivity(intent);
 	}
 
+	private boolean isPackageInstalled(String packagename) {
+		PackageManager pm = getPackageManager();
+		try {
+			pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+			return false;
+		}
+	}
 
 	//Code for making direction API call and get all route between two points
 
@@ -416,8 +433,10 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 			@Override
 			public void run() {
 				JSONParser jParser = new JSONParser();
-				final String json = jParser.getJSONFromUrl(makeURL(AppController.LATITUDE, AppController.LONGITUDE,
-						Double.parseDouble(place.getLatitude()), Double.parseDouble(place.getLongitude())));
+				final String json = jParser.getJSONFromUrl(makeURL(Double.parseDouble(preferences.getLatitude()),
+						Double.parseDouble(preferences.getLongitude()),
+						Double.parseDouble(place.getLatitude()),
+						Double.parseDouble(place.getLongitude())));
 
 				runOnUiThread(new Runnable() {
 					@Override
@@ -457,7 +476,6 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		urlString.append("&key="+AppController.API_KEY);
 		return urlString.toString();
 	}
-
 
 	public void drawPath(String  result,GoogleMap mMap) {
 

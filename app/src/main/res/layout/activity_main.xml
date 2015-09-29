@@ -28,6 +28,15 @@
         android:background="@color/primary_dark">
 
 
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back_arrow" />
+
 
             <TextView
                 android:id="@+id/txt_title"

@@ -54,5 +54,10 @@
     </declare-styleable>
 
 
+    <declare-styleable name="LevenimMTTextView">
+        <attr name="fontName" format="string" />
+        <attr name="textStyle" format="reference"/>
+    </declare-styleable>
+
 
 </resources>

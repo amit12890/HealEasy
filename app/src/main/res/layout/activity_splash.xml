@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:levenimText="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lay_splash_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,57 +18,50 @@
     <LinearLayout
         android:id="@+id/lay_symbol"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="horizontal"
+        android:gravity="center"
         android:layout_centerInParent="true">
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="60sp"
+            android:textSize="70sp"
             android:textColor="#8FC54D"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
+            levenimText:fontName="levenim_mt.ttf"
             android:text="H"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
+            levenimText:fontName="levenim_mt.ttf"
             android:text="e"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
+            levenimText:fontName="levenim_mt.ttf"
             android:text="a"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_l"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
+            levenimText:fontName="levenim_mt.ttf"
             android:text="l"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_ee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,9 +69,10 @@
             android:visibility="visible"
             android:textColor="#00B1F6"
             android:textStyle="bold"
+            levenimText:fontName="levenim_mt_bold.ttf"
             android:text="E"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_ea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,13 +80,10 @@
             android:visibility="visible"
             android:textColor="#00B1F6"
             android:textStyle="bold"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
+            levenimText:fontName="levenim_mt_bold.ttf"
             android:text="a"/>
 
-        <TextView
+        <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_s"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -99,24 +91,33 @@
             android:visibility="visible"
             android:textStyle="bold"
             android:textColor="#00B1F6"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
+            levenimText:fontName="levenim_mt_bold.ttf"
             android:text="s"/>
-        <TextView
-            android:id="@+id/txt_y"
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="60sp"
-            android:visibility="visible"
-            android:textColor="#00B1F6"
-            android:textStyle="bold"
-            android:shadowColor="#00193F"
-            android:shadowDx="-2"
-           
-            android:shadowRadius="1"
-            android:text="Y"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="-10dp"
+            android:layout_marginLeft="-25dp">
+
+            <ImageView
+                android:id="@+id/img_y"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/logo_ya"/>
+
+            <ImageView
+                android:id="@+id/img_round"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/logo_round"
+                android:layout_above="@+id/img_y"
+                android:layout_marginBottom="-20dp"
+                android:layout_marginLeft="42dp" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
     <ImageView
@@ -126,6 +127,7 @@
         android:src="@drawable/symbol"
         android:layout_above="@id/lay_symbol"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:layout_marginBottom="10dp"/>
 
 

@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.amitthakkar.myapplication.utility.AppPreferences;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -23,9 +24,10 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 500;
     private GoogleApiClient mGoogleApiClient;
-    TextView txtH,txtE,txtA,txtL,txtEE,txtEA,txtES,txtEY;
-    ImageView imgSymbol;
+    TextView txtH,txtE,txtA,txtL,txtEE,txtEA,txtES;
+    ImageView imgRound,imgY;
     Animation animH,animE,animA,animL,animEE,animEA,animES,animEY,animSymbol;
+    AppPreferences preferences;
     // Tag used to cancel the request
 
     @Override
@@ -39,9 +41,10 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
+        preferences = new AppPreferences(SplashActivity.this);
 
-        imgSymbol = (ImageView) findViewById(R.id.img_symbol);
-        imgSymbol.setVisibility(View.INVISIBLE);
+        imgRound = (ImageView) findViewById(R.id.img_round);
+        imgRound.setVisibility(View.INVISIBLE);
         txtH = (TextView) findViewById(R.id.txt_h);
         txtE = (TextView) findViewById(R.id.txt_e);
         txtE.setVisibility(View.INVISIBLE);
@@ -55,8 +58,8 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
         txtEA.setVisibility(View.INVISIBLE);
         txtES = (TextView) findViewById(R.id.txt_s);
         txtES.setVisibility(View.INVISIBLE);
-        txtEY = (TextView) findViewById(R.id.txt_y);
-        txtEY.setVisibility(View.INVISIBLE);
+        imgY = (ImageView) findViewById(R.id.img_y);
+        imgY.setVisibility(View.INVISIBLE);
 
         animH = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.fade_in);
@@ -91,7 +94,7 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
         animEY.setAnimationListener(this);
 
         animSymbol = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.zoom_out);
+                R.anim.move);
         animSymbol.setAnimationListener(this);
 
 
@@ -123,8 +126,9 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
                 mGoogleApiClient);
 
         if (mLastLocation != null) {
-            AppController.LATITUDE = mLastLocation.getLatitude();
-            AppController.LONGITUDE = mLastLocation.getLongitude();
+
+            preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
+            preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
 
         }
 
@@ -189,11 +193,12 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
             txtES.startAnimation(animES);
         }else  if(animation == animES){
             txtES.setVisibility(View.VISIBLE);
-            txtEY.setVisibility(View.VISIBLE);
-            txtEY.startAnimation(animEY);
+            imgY.setVisibility(View.VISIBLE);
+            imgY.startAnimation(animEY);
         }else  if(animation == animEY){
-            imgSymbol.setVisibility(View.VISIBLE);
-            imgSymbol.startAnimation(animSymbol);
+
+            imgRound.setVisibility(View.VISIBLE);
+            imgRound.startAnimation(animSymbol);
         }else  if(animation == animSymbol){
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -214,4 +219,8 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

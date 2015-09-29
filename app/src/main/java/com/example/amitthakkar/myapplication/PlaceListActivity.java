@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.amitthakkar.myapplication.utility.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +48,7 @@ public class PlaceListActivity extends AppCompatActivity  {
     private String latitude,longitude;
     GooglePlaces gPlace;
     Utility util;
+    private ImageView imgBack;
     String type = "hospital";
     private List<Place> placesList;
     private ArrayList<PlaceDetails> placesDetailList,tempArrayList;
@@ -61,6 +63,7 @@ public class PlaceListActivity extends AppCompatActivity  {
     PlaceListAdapter placeListAdapter;
     LinearLayout layLoading ;
     String query;
+    private AppPreferences preferences;
 
 
     @Override
@@ -69,6 +72,7 @@ public class PlaceListActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         util = new Utility(PlaceListActivity.this);
+        preferences = new AppPreferences(PlaceListActivity.this);
         type = getIntent().getStringExtra("place_type");
         gPlace = new GooglePlaces(AppController.API_KEY);
         placeDetails = new PlaceDetails();
@@ -82,6 +86,14 @@ public class PlaceListActivity extends AppCompatActivity  {
         edSearch = (EditText) findViewById(R.id.edt_city);
         txtTitle = (TextView) findViewById(R.id.txt_title);
         txtTitle.setText(AppController.placeTypeMap.get(type));
+
+        imgBack = (ImageView) findViewById(R.id.img_back);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         String hintType = AppController.placeTypeMap.get(type);
         hintType = String.valueOf(hintType.charAt(0)).toUpperCase() + hintType.substring(1, hintType.length()).toLowerCase();
@@ -98,7 +110,7 @@ public class PlaceListActivity extends AppCompatActivity  {
                     placesList.clear();
                     placesDetailList.clear();
                     PAGE_TOKEN = "";
-                    query = getCityName(AppController.LATITUDE,AppController.LONGITUDE);
+                    query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
                     getPlacesList(query,PAGE_TOKEN);
                 }
             }
@@ -114,11 +126,14 @@ public class PlaceListActivity extends AppCompatActivity  {
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                placesList.clear();
-                placesDetailList.clear();
-                PAGE_TOKEN = "";
-                query = edSearch.getText().toString();
-                getPlacesList(query, PAGE_TOKEN);
+                if(edSearch.getText().toString().trim().length() > 0){
+                    placesList.clear();
+                    placesDetailList.clear();
+                    PAGE_TOKEN = "";
+                    query = edSearch.getText().toString();
+                    getPlacesList(query, PAGE_TOKEN);
+                }
+
             }
         });
 
@@ -165,7 +180,7 @@ public class PlaceListActivity extends AppCompatActivity  {
 
         placeListView.setAdapter(placeListAdapter);
 
-        query = getCityName(AppController.LATITUDE,AppController.LONGITUDE);
+        query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
         getPlacesList(query, PAGE_TOKEN);
     }
 
@@ -269,8 +284,8 @@ public class PlaceListActivity extends AppCompatActivity  {
             placeDetails.setLongitude(areaObj.getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
             Location homeLocation = new Location("");
-            homeLocation.setLatitude(AppController.LATITUDE);
-            homeLocation.setLongitude(AppController.LONGITUDE);
+            homeLocation.setLatitude(Double.parseDouble(preferences.getLatitude()));
+            homeLocation.setLongitude(Double.parseDouble(preferences.getLongitude()));
 
             Location placeLocation = new Location("");
             placeLocation.setLatitude(Double.parseDouble(placeDetails.getLatitude()));

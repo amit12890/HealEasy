@@ -123,25 +123,25 @@ public class AppPreferences {
 		editor.commit();
 	}
 
-	public Long getLatitude()
+	public String getLatitude()
 	{
-		return preferences.getLong(LATITUDE, 0);
+		return preferences.getString(LATITUDE, "22.6919");
 	}
 
-	public void setLatitude(Long latitude){
+	public void setLatitude(String latitude){
 		Editor editor = preferences.edit();
-		editor.putLong(LATITUDE, latitude);
+		editor.putString(LATITUDE, latitude);
 		editor.commit();
 	}
 
-	public Long getLongitude()
+	public String getLongitude()
 	{
-		return preferences.getLong(LONGITUDE, 0);
+		return preferences.getString(LONGITUDE, "72.8632");
 	}
 
-	public void setLongitude(Long latitude){
+	public void setLongitude(String latitude){
 		Editor editor = preferences.edit();
-		editor.putLong(LONGITUDE, latitude);
+		editor.putString(LONGITUDE, latitude);
 		editor.commit();
 	}
 
