@@ -3,6 +3,8 @@ package com.example.amitthakkar.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -223,4 +225,7 @@ public class SplashActivity extends Activity implements  GoogleApiClient.Connect
     public void onBackPressed() {
 
     }
+
+
+
 }

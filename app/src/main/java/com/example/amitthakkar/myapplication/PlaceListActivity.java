@@ -1,5 +1,6 @@
 package com.example.amitthakkar.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -18,14 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.amitthakkar.myapplication.utility.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import com.rey.material.widget.ListView;
 
 import org.json.JSONArray;
@@ -38,15 +40,15 @@ import java.util.List;
 import java.util.Locale;
 
 import se.walkercrou.places.GooglePlaces;
-import se.walkercrou.places.Param;
 import se.walkercrou.places.Place;
-import se.walkercrou.places.exception.NoResultsFoundException;
 
-public class PlaceListActivity extends AppCompatActivity  {
+public class PlaceListActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
 
     private String latitude,longitude;
     GooglePlaces gPlace;
+    private GoogleApiClient mGoogleApiClient;
     Utility util;
     private ImageView imgBack;
     String type = "hospital";
@@ -64,6 +66,7 @@ public class PlaceListActivity extends AppCompatActivity  {
     LinearLayout layLoading ;
     String query;
     private AppPreferences preferences;
+    private LocationRequest mLocationRequest;
 
 
     @Override
@@ -73,6 +76,14 @@ public class PlaceListActivity extends AppCompatActivity  {
 
         util = new Utility(PlaceListActivity.this);
         preferences = new AppPreferences(PlaceListActivity.this);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(PlaceListActivity.this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+
         type = getIntent().getStringExtra("place_type");
         gPlace = new GooglePlaces(AppController.API_KEY);
         placeDetails = new PlaceDetails();
@@ -126,7 +137,7 @@ public class PlaceListActivity extends AppCompatActivity  {
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edSearch.getText().toString().trim().length() > 0){
+                if (edSearch.getText().toString().trim().length() > 0) {
                     placesList.clear();
                     placesDetailList.clear();
                     PAGE_TOKEN = "";
@@ -180,11 +191,8 @@ public class PlaceListActivity extends AppCompatActivity  {
 
         placeListView.setAdapter(placeListAdapter);
 
-        query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
-        getPlacesList(query, PAGE_TOKEN);
+
     }
-
-
 
     private void getPlacesList(final String query,final String page_token) {
         tempArrayList.clear();
@@ -195,7 +203,47 @@ public class PlaceListActivity extends AppCompatActivity  {
             public void run() {
                 try {
                     String response = util.getPlaceList(type+query.replace(" ",""),page_token);
+                    if(response.equals(Utility.ERROR)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                util.showErrorDialog(Utility.ERROR_MESSAGE, "OK", "");
+                                util.errorDialog.getBuilder().callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        finish();
+                                    }
+                               });
+                                util.hideLoadingDialog();
+                                return;
+                            }
+                        });
+                    }else if(response.equals(Utility.TIMEOUT_ERROR)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                util.showErrorDialog(Utility.TIMEOUT_ERROR_MESSAGE, "Try Again", "No");
+                                util.errorDialog.getBuilder().callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        String query = getCityName(Double.parseDouble(preferences.getLatitude()),
+                                                Double.parseDouble(preferences.getLongitude()));
+                                        getPlacesList(query, PAGE_TOKEN);
+                                    }
 
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
+                                        finish();
+                                    }
+                                });
+                                util.hideLoadingDialog();
+                                return;
+                            }
+                        });
+                    }
                     JSONObject responseObj = new JSONObject(response);
                     if(responseObj.has("status")){
                         if(responseObj.getString("status").equals("OK")){
@@ -265,7 +313,7 @@ public class PlaceListActivity extends AppCompatActivity  {
             }
         });
 
-        if (Utility.isNetworkAvailable(PlaceListActivity.this, util)) {
+        if (util.isNetworkAvailable()) {
             t.start();
 
         }
@@ -313,6 +361,80 @@ public class PlaceListActivity extends AppCompatActivity  {
         String countryName = addresses.get(0).getAddressLine(2);
 
         return addresses.get(0).getLocality();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d("TAG", "Connected");
+
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+
+        if (mLastLocation != null) {
+
+            preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
+            preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
+            createLocationRequest();
+
+        }else if(mLastLocation == null){
+            query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
+            getPlacesList(query, PAGE_TOKEN);
+            createLocationRequest();
+        }
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("TAG", "Suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d("TAG", "Failed");
+    }
+
+    @Override
+    public void onLocationChanged(Location mLastLocation) {
+        if (mLastLocation != null) {
+            resetList();
+            preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
+            preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
+            query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
+            getPlacesList(query, PAGE_TOKEN);
+            stopLocationUpdates();
+        }
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    public void resetList(){
+        placesList.clear();
+        placesDetailList.clear();
+        PAGE_TOKEN = "";
     }
 
 }

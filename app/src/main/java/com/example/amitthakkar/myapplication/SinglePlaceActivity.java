@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.amitthakkar.myapplication.utility.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.JSONParser;
 import com.example.amitthakkar.myapplication.utility.Utility;
@@ -77,6 +78,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		setContentView(R.layout.single_place);
 
 		place = (PlaceDetails) getIntent().getSerializableExtra("place");
+		utility = new Utility(SinglePlaceActivity.this);
 		preferences = new AppPreferences(SinglePlaceActivity.this);
 
 		mapFragment = (MapFragment) getFragmentManager()
@@ -127,6 +129,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		});
 
 		imgWhatsApp = (ImageView) findViewById(R.id.img_whatsapp);
+		imgWhatsApp.setColorFilter(Color.parseColor("#A2A2A2"));
 		if(isPackageInstalled("com.whatsapp"))
 			imgWhatsApp.setVisibility(View.VISIBLE);
 		else
@@ -135,14 +138,13 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		imgWhatsApp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				isWhatsApp = true;
-				if(isMapFullScreen){
+				//isWhatsApp = true;
+				/*if(isMapFullScreen){
 					takeScreenShot(R.id.lay_fullscreen,fullMapFragment);
 				}else {
 					takeScreenShot(R.id.lay_details,mapFragment);
-				}
-
-
+				}*/
+				shareOnWhatsApp(null);
 			}
 		});
 
@@ -158,7 +160,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		latitude = place.getLatitude();
 		longitude = place.getLongitude();
 
-		utility = new Utility(SinglePlaceActivity.this);
+
 		parsePlaceDetails(place.getId());
 
 
@@ -171,7 +173,45 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 			@Override
 			public void run() {
 				final String response = utility.getPlaceDetails(place_id);
+				if(response.equals(Utility.ERROR)) {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							utility.showErrorDialog(Utility.ERROR_MESSAGE, "OK", "");
+							utility.errorDialog.getBuilder().callback(new MaterialDialog.ButtonCallback() {
+								@Override
+								public void onPositive(MaterialDialog dialog) {
+									super.onPositive(dialog);
+									finish();
+								}
+							});
+							utility.hideLoadingDialog();
+							return;
+						}
+					});
+				}else if(response.equals(Utility.TIMEOUT_ERROR)) {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							utility.showErrorDialog(Utility.TIMEOUT_ERROR_MESSAGE, "Try Again", "No");
+							utility.errorDialog.getBuilder().callback(new MaterialDialog.ButtonCallback() {
+								@Override
+								public void onPositive(MaterialDialog dialog) {
+									super.onPositive(dialog);
+									parsePlaceDetails(place.getId());
+								}
 
+								@Override
+								public void onNegative(MaterialDialog dialog) {
+									super.onNegative(dialog);
+									finish();
+								}
+							});
+							utility.hideLoadingDialog();
+							return;
+						}
+					});
+				}
 				try{
 					JSONObject jsonObject = new JSONObject(response);
 
@@ -198,7 +238,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 			}
 		});
-		if(utility.isNetworkAvailable(SinglePlaceActivity.this, utility))
+		if(utility.isNetworkAvailable())
 		{
 			t.start();
 
@@ -315,6 +355,14 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		//gMap.addPolyline(poly);
 		//mapFragment.getMap().addPolyline(poly);
 
+		lbl_phone.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + place.getPhone()));
+				startActivity(intent);
+			}
+		});
+
 
 	}
 
@@ -406,10 +454,11 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
-		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n"));
+		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n") +
+				"\n\nPhone No: " + place.getPhone());
 		intent.setType("text/plain");
-		intent.setType("image/*");
-		intent.putExtra(Intent.EXTRA_STREAM, uri);
+		//intent.setType("image/*");
+		//intent.putExtra(Intent.EXTRA_STREAM, uri);
 		intent.setPackage("com.whatsapp");
 		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		startActivity(intent);
@@ -453,7 +502,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 			}
 		});
-		if (utility.isNetworkAvailable(SinglePlaceActivity.this, utility)) {
+		if (utility.isNetworkAvailable()) {
 			t.start();
 
 		}

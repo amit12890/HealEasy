@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class Utility {
 
     Activity activity;
-    public static MaterialDialog errorDialog,loadingDialog;
+    public MaterialDialog errorDialog,loadingDialog;
     public static ProgressView progressView;
     RelativeLayout progressLay;
     private boolean isDailogueVisible = false;
@@ -55,7 +55,8 @@ public class Utility {
     public static String TIMEOUT_ERROR = "timeout_error",ERROR = "error";
     public static String TIMEOUT_ERROR_MESSAGE = "It takes longer time than expected.\n" +
             "Please try again later.";
-    public static String ERROR_MESSAGE = "Some error has occurred.\n Please try again later";
+    public static String ERROR_MESSAGE = "Some error has occurred. Please try again later";
+    public static String CONNECTION_ERROR_MESSAGE = "No internet connection available. Please be online to proceed further.";
 
     final int TIMEOUT = 10;
 
@@ -229,9 +230,6 @@ public class Utility {
     }
 
 
-
-
-
     public void getHashKey() {
 
         // Add code to print out the key hash
@@ -294,7 +292,7 @@ public class Utility {
         return displaymetrics.heightPixels;
     }
 
-    public static boolean isNetworkAvailable(Activity activity, final Utility utility){
+    public boolean isNetworkAvailable(){
         try {
 
             boolean haveConnectedWifi = false;
@@ -312,18 +310,15 @@ public class Utility {
             }
             if(!(haveConnectedWifi || haveConnectedMobile))
             {
-                if(utility!=null)
-                {
-                    new Handler().post(new Runnable() {
+                new Handler().post(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
+                    @Override
+                    public void run() {
+                    // TODO Auto-generated method stub
+                    showErrorDialog(CONNECTION_ERROR_MESSAGE,"Ok","");
+                    }
+                });
 
-                        }
-                    });
-
-                }
                 //Toast.makeText(activity, activity.getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 //showErrorDialog("Error",activity.getString(R.string.no_internet), activity);
             }
@@ -334,4 +329,5 @@ public class Utility {
             return false;
         }
     }
+
 }
