@@ -195,7 +195,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
             preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
             preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
             updateLocationInfo();
-            //stopLocationUpdates();
+            stopLocationUpdates();
         }
     }
 

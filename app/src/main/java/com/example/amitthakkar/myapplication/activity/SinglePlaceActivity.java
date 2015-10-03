@@ -437,13 +437,13 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	private void shareOnWhatsApp(File file){
 
 		isWhatsApp = false;
-		Uri uri = Uri.fromFile(file);
-
+		//Uri uri = Uri.fromFile(file);
+		String gMapURL = "http://maps.google.com/?daddr="+place.getAddress().trim();
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n") +
-				"\n\nPhone No: " + place.getPhone());
+		intent.putExtra(Intent.EXTRA_TEXT, place.getName()+"\n"+place.getAddress().replace(",", "\n") +
+				"\nPhone No: " + place.getPhone()+"\nGoogle Map URL:\n"+gMapURL.replace(" ",""));
 
 		//intent.setType("image/*");
 		//intent.putExtra(Intent.EXTRA_STREAM, uri);
