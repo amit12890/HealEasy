@@ -50,25 +50,73 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/lay_place_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/lay_title">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <com.rey.material.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Select State"/>
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/txt_state_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:text="State Name"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <com.rey.material.widget.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Select Area"/>
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/txt_area_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:text="Area Name"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/lay_upper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/lay_title"
+        android:layout_below="@+id/lay_place_selection"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp">
 
         <RelativeLayout
             android:id="@+id/lay_hospitals"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:orientation="vertical"
             android:background="#01AEF0"
             android:layout_margin="10dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:src="@drawable/ic_hospitals"/>
@@ -77,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:text="HOSPITALS"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"
@@ -86,15 +134,15 @@
 
         <RelativeLayout
             android:id="@+id/lay_pharmacy"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:orientation="vertical"
             android:background="#01AEF0"
             android:layout_margin="10dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:src="@drawable/ic_pharmacy"/>
@@ -103,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:text="PHARMACY"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"
@@ -122,15 +170,15 @@
 
         <RelativeLayout
             android:id="@+id/lay_labs"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:orientation="vertical"
             android:background="#01AEF0"
             android:layout_margin="10dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_laboratory"/>
@@ -140,7 +188,7 @@
                 android:textColor="#ffffff"
                 android:text="DIAGNOSTIC CENTER"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"
@@ -149,15 +197,15 @@
 
         <RelativeLayout
             android:id="@+id/lay_medical_equipment"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:orientation="vertical"
             android:background="#01AEF0"
             android:layout_margin="10dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_equipments"/>
@@ -167,7 +215,7 @@
                 android:textColor="#ffffff"
                 android:text="MEDICAL EQUIPMENT"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"
@@ -178,8 +226,8 @@
 
     <RelativeLayout
         android:id="@+id/lay_health_planner"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:orientation="vertical"
         android:background="#01AEF0"
         android:layout_below="@+id/lay_below"
@@ -187,8 +235,8 @@
         android:layout_margin="10dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_planner"/>
@@ -198,7 +246,7 @@
             android:textColor="#ffffff"
             android:text="HEALTH PLANNER"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"

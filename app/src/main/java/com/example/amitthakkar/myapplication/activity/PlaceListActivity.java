@@ -1,6 +1,5 @@
-package com.example.amitthakkar.myapplication;
+package com.example.amitthakkar.myapplication.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -21,7 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.amitthakkar.myapplication.utility.AppPreferences;
+import com.example.amitthakkar.myapplication.AppController;
+import com.example.amitthakkar.myapplication.model.PlaceDetails;
+import com.example.amitthakkar.myapplication.adapter.PlaceListAdapter;
+import com.example.amitthakkar.myapplication.R;
+import com.example.amitthakkar.myapplication.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,8 +44,7 @@ import java.util.Locale;
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
 
-public class PlaceListActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener {
+public class PlaceListActivity extends AppCompatActivity  {
 
 
     private String latitude,longitude;
@@ -77,14 +78,8 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
         util = new Utility(PlaceListActivity.this);
         preferences = new AppPreferences(PlaceListActivity.this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(PlaceListActivity.this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-
         type = getIntent().getStringExtra("place_type");
+        query = getIntent().getStringExtra("query");
         gPlace = new GooglePlaces(AppController.API_KEY);
         placeDetails = new PlaceDetails();
         placesList = new ArrayList<>();
@@ -121,9 +116,12 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
                     placesList.clear();
                     placesDetailList.clear();
                     PAGE_TOKEN = "";
-                    query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
-                    getPlacesList(query,PAGE_TOKEN);
-                }
+                    query = getIntent().getStringExtra("query");
+                    if(query.equals(Utility.TIMEOUT_ERROR))
+                        showTimeOutError();
+                    else
+                        getPlacesList(query, PAGE_TOKEN);
+            }
             }
 
             @Override
@@ -141,7 +139,7 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
                     placesList.clear();
                     placesDetailList.clear();
                     PAGE_TOKEN = "";
-                    query = edSearch.getText().toString();
+                    query = type+"In"+edSearch.getText().toString();
                     getPlacesList(query, PAGE_TOKEN);
                 }
 
@@ -191,6 +189,7 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
 
         placeListView.setAdapter(placeListAdapter);
 
+        getPlacesList(query,PAGE_TOKEN);
 
     }
 
@@ -202,7 +201,7 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
             @Override
             public void run() {
                 try {
-                    String response = util.getPlaceList(type+query.replace(" ",""),page_token);
+                    String response = util.getPlaceList(query.replace(" ",""),page_token);
                     if(response.equals(Utility.ERROR)) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -228,9 +227,10 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
                                         super.onPositive(dialog);
-                                        String query = getCityName(Double.parseDouble(preferences.getLatitude()),
-                                                Double.parseDouble(preferences.getLongitude()));
-                                        getPlacesList(query, PAGE_TOKEN);
+                                        if(query.equals(Utility.TIMEOUT_ERROR))
+                                            showTimeOutError();
+                                        else
+                                            getPlacesList(query, PAGE_TOKEN);
                                     }
 
                                     @Override
@@ -285,6 +285,14 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
 
 
                             }
+                        }else if(responseObj.getString("status").equals("ZERO_RESULTS")){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    util.hideLoadingDialog();
+                                    txtNoData.setVisibility(View.VISIBLE);
+                                }
+                            });
                         }
                     }else {
                         runOnUiThread(new Runnable() {
@@ -347,94 +355,27 @@ public class PlaceListActivity extends AppCompatActivity implements GoogleApiCli
         return  placeDetails;
     }
 
-    public String getCityName(Double latitude,Double longitude){
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void showTimeOutError(){
+        util.showErrorDialog(Utility.TIMEOUT_ERROR_MESSAGE, "Try Again", "No");
+        util.errorDialog.getBuilder().callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                super.onPositive(dialog);
+                String query = util.getCityName(Double.parseDouble(preferences.getLatitude()),
+                        Double.parseDouble(preferences.getLongitude()));
+                if(query.equals(Utility.TIMEOUT_ERROR))
+                    showTimeOutError();
+                else
+                    getPlacesList(query, PAGE_TOKEN);
 
-        String cityName = addresses.get(0).getAddressLine(0);
-        String stateName = addresses.get(0).getAddressLine(1);
-        String countryName = addresses.get(0).getAddressLine(2);
+            }
 
-        return addresses.get(0).getLocality();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d("TAG", "Connected");
-
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        if (mLastLocation != null) {
-
-            preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
-            preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
-            createLocationRequest();
-
-        }else if(mLastLocation == null){
-            query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
-            getPlacesList(query, PAGE_TOKEN);
-            createLocationRequest();
-        }
-
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d("TAG", "Suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d("TAG", "Failed");
-    }
-
-    @Override
-    public void onLocationChanged(Location mLastLocation) {
-        if (mLastLocation != null) {
-            resetList();
-            preferences.setLatitude(String.valueOf(mLastLocation.getLatitude()));
-            preferences.setLongitude(String.valueOf(mLastLocation.getLongitude()));
-            query = getCityName(Double.parseDouble(preferences.getLatitude()),Double.parseDouble(preferences.getLongitude()));
-            getPlacesList(query, PAGE_TOKEN);
-            stopLocationUpdates();
-        }
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        startLocationUpdates();
-    }
-
-    protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-    }
-
-    protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    public void resetList(){
-        placesList.clear();
-        placesDetailList.clear();
-        PAGE_TOKEN = "";
+            @Override
+            public void onNegative(MaterialDialog dialog) {
+                super.onNegative(dialog);
+                finish();
+            }
+        });
     }
 
 }

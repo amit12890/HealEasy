@@ -1,10 +1,8 @@
-package com.example.amitthakkar.myapplication;
+package com.example.amitthakkar.myapplication.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,7 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.amitthakkar.myapplication.utility.AppPreferences;
+import com.example.amitthakkar.myapplication.R;
+import com.example.amitthakkar.myapplication.AppPreferences;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;

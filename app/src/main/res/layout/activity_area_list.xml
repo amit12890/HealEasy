@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff">
+
+    <RelativeLayout
+        android:id="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_dark">
+
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back_arrow" />
+
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Select State"
+            android:textStyle="bold"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"
+            />
+
+
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/lay_filter_place"
+        android:layout_below="@+id/lay_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:background="@color/primary_dark">
+
+        <EditText
+            android:id="@+id/edt_filter_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:hint="Search State"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:paddingLeft="10dp"/>
+
+    </LinearLayout>
+    <com.rey.material.widget.ListView
+        android:id="@+id/list_place"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/lay_filter_place"
+        android:background="#ffffff"
+        android:divider="@null"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:choiceMode="singleChoice"
+        android:descendantFocusability="beforeDescendants"/>
+
+
+</RelativeLayout>

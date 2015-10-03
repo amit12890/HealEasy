@@ -1,4 +1,4 @@
-package com.example.amitthakkar.myapplication;
+package com.example.amitthakkar.myapplication.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.amitthakkar.myapplication.AppController;
+import com.example.amitthakkar.myapplication.R;
 
 
 public class ComingSoonActivity extends Activity {

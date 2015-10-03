@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.example.amitthakkar.myapplication.model.Area;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -119,5 +120,46 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 		return areaList;
 	}
 
+
+	public ArrayList<String> getStateList() {
+		ArrayList<String> stateList = new ArrayList<String>();
+		// Select All Query
+		String selectQuery = "SELECT DISTINCT "+KEY_AREA_STATE+" FROM " + TABLE_NAME;
+
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				stateList.add(cursor.getString(0));
+			} while (cursor.moveToNext());
+		}
+
+		return stateList;
+	}
+
+	public ArrayList<Area> getAreaList(String state_name) {
+		ArrayList<Area> areaList = new ArrayList<Area>();
+		// Select All Query
+		String selectQuery = "SELECT DISTINCT "+KEY_AREA_NAME+","+KEY_AREA_CITY+" FROM " + TABLE_NAME+" " +
+				"WHERE "+KEY_AREA_STATE+"='"+state_name+"'";
+
+		SQLiteDatabase db = getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				Area area = new Area();
+				area.area_city = cursor.getString(1);
+				area.area_name = cursor.getString(0);
+				areaList.add(area);
+			} while (cursor.moveToNext());
+		}
+
+		return areaList;
+	}
 
 }

@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -36,6 +38,8 @@ import java.net.SocketTimeoutException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by amit.thakkar on 7/6/2015.
@@ -229,6 +233,37 @@ public class Utility {
         }
     }
 
+    public String getCityName(Double latitude,Double longitude){
+        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+        List<Address> addresses = null;
+        String cityName = "";
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            cityName = addresses.get(0).getLocality();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Utility.TIMEOUT_ERROR;
+        }
+
+        return cityName;
+    }
+
+    public Address getAddress(Double latitude,Double longitude){
+        Thread t = new Thread();
+
+        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+        List<Address> addresses = null;
+        String cityName = "";
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            cityName = addresses.get(0).getAdminArea();
+        } catch (IOException e) {
+            e.printStackTrace();
+            //return Utility.ERROR;
+        }
+
+        return addresses.get(0);
+    }
 
     public void getHashKey() {
 
@@ -272,7 +307,6 @@ public class Utility {
         }
 
     }
-
 
     public boolean isDailogueVisible(){
         return isDailogueVisible;

@@ -1,33 +1,28 @@
-package com.example.amitthakkar.myapplication;
+package com.example.amitthakkar.myapplication.activity;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.amitthakkar.myapplication.utility.AppPreferences;
+import com.example.amitthakkar.myapplication.AppController;
+import com.example.amitthakkar.myapplication.model.PlaceDetails;
+import com.example.amitthakkar.myapplication.R;
+import com.example.amitthakkar.myapplication.AppPreferences;
 import com.example.amitthakkar.myapplication.utility.JSONParser;
 import com.example.amitthakkar.myapplication.utility.Utility;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,18 +39,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import se.walkercrou.places.Place;
 
 public class SinglePlaceActivity extends Activity implements OnMapReadyCallback {
 	// flag for Internet connection status
@@ -130,10 +117,10 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 		imgWhatsApp = (ImageView) findViewById(R.id.img_whatsapp);
 		imgWhatsApp.setColorFilter(Color.parseColor("#A2A2A2"));
-		if(isPackageInstalled("com.whatsapp"))
+		/*if(isPackageInstalled("com.whatsapp"))
 			imgWhatsApp.setVisibility(View.VISIBLE);
 		else
-			imgWhatsApp.setVisibility(View.INVISIBLE);
+			imgWhatsApp.setVisibility(View.INVISIBLE);*/
 
 		imgWhatsApp.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -454,9 +441,10 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
+		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_TEXT, place.getAddress().replace(",", "\n") +
 				"\n\nPhone No: " + place.getPhone());
-		intent.setType("text/plain");
+
 		//intent.setType("image/*");
 		//intent.putExtra(Intent.EXTRA_STREAM, uri);
 		intent.setPackage("com.whatsapp");
@@ -522,7 +510,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		urlString.append(",");
 		urlString.append(Double.toString(destlog));
 		urlString.append("&sensor=false&mode=driving&alternatives=true");
-		urlString.append("&key="+AppController.API_KEY);
+		urlString.append("&key="+ AppController.API_KEY);
 		return urlString.toString();
 	}
 
