@@ -2,7 +2,6 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" >
 
-        <item name="android:listSelector">#5001AEF0</item>
     </style>
 
 </resources>

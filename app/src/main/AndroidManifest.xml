@@ -41,7 +41,8 @@
         </activity>
 
         <activity
-            android:name=".activity.PlaceListActivity">
+            android:name=".activity.PlaceListActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
@@ -49,7 +50,8 @@
         </activity>
 
         <activity
-            android:name=".activity.SearchAreaListActivity">
+            android:name=".activity.SearchAreaListActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
 

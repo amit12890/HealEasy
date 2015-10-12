@@ -1,34 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/medical_bkg"
-            android:visibility="gone"
-            android:scaleType="centerCrop"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#99ffffff"/>
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lay_title"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary_dark">
-
-
 
             <TextView
                 android:id="@+id/txt_title"
@@ -54,16 +36,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/lay_title">
+        android:layout_below="@+id/lay_title"
+        android:background="#E9E9E9">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_margin="10dp">
             <com.rey.material.widget.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textColor="#9D9D9D"
                 android:text="Select State"/>
 
             <com.rey.material.widget.TextView
@@ -72,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="14sp"
+                android:textColor="#00AEED"
                 android:text="State Name"/>
 
         </RelativeLayout>
@@ -79,11 +64,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_margin="10dp">
             <com.rey.material.widget.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:textColor="#9D9D9D"
                 android:text="Select Area"/>
 
             <com.rey.material.widget.TextView
@@ -92,195 +78,253 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textSize="14sp"
+                android:textColor="#00AEED"
                 android:text="Area Name"/>
 
         </RelativeLayout>
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/lay_upper"
-        android:layout_width="wrap_content"
+        android:id="@+id/lay_dashboard_items"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_below="@+id/lay_place_selection"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp">
+        android:background="#ffffff">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/lay_hospitals"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="#01AEF0"
-            android:layout_margin="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:background="@drawable/linearlay_selector"
+            android:paddingLeft="10dp">
 
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_hospitals"/>
+            <RelativeLayout
+                android:id="@+id/lay_hospital_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/hospital_circle"/>
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:text="HOSPITALS"
-                android:textSize="14sp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:textColor="#00AEED"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/lay_hospital_icon"
+                android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-        </RelativeLayout>
+                android:visibility="visible"/>
 
-        <RelativeLayout
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9E9"/>
+
+        <LinearLayout
             android:id="@+id/lay_pharmacy"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="#01AEF0"
-            android:layout_margin="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/linearlay_selector"
+            android:clickable="true"
+            android:paddingLeft="10dp">
 
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:src="@drawable/ic_pharmacy"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/pharmacy_circle"/>
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:text="PHARMACY"
-                android:textSize="14sp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:textColor="#00AEED"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-        </RelativeLayout>
+                android:visibility="visible"/>
+        </LinearLayout>
 
-    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9E9"/>
 
-    <LinearLayout
-        android:id="@+id/lay_below"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/lay_upper"
-        android:layout_centerHorizontal="true">
-
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/lay_labs"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="#01AEF0"
-            android:layout_margin="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
 
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_laboratory"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/lab_circle"/>
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:text="DIAGNOSTIC CENTER"
                 android:gravity="center"
-                android:textSize="14sp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:textColor="#00AEED"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-        </RelativeLayout>
+                android:visibility="visible"/>
+        </LinearLayout>
 
-        <RelativeLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9E9"/>
+
+        <LinearLayout
             android:id="@+id/lay_medical_equipment"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="#01AEF0"
-            android:layout_margin="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
 
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_equipments"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/medical_equipment_circle"/>
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
                 android:text="MEDICAL EQUIPMENT"
                 android:gravity="center"
-                android:textSize="14sp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:textColor="#00AEED"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-        </RelativeLayout>
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E9E9E9"/>
+
+        <LinearLayout
+            android:id="@+id/lay_health_planner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/health_planner"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HEALTH PLANNER"
+                android:gravity="center"
+                android:textColor="#00AEED"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+        </LinearLayout>
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/lay_health_planner"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:orientation="vertical"
-        android:background="#01AEF0"
-        android:layout_below="@+id/lay_below"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp">
-
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/ic_planner"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="HEALTH PLANNER"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"/>
-    </RelativeLayout>
 
 
     <LinearLayout
         android:id="@+id/lay_social"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:layout_below="@+id/lay_dashboard_items"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp">
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="#E9E9E9">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/facebook_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_fb"
             android:layout_marginRight="10dp"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/gplus_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_gplus"
             android:layout_marginRight="10dp"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/twitter_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_twiter"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lay_place_selection"
+        android:layout_above="@+id/lay_social"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:background="#00AEED"/>
+
 
 </RelativeLayout>

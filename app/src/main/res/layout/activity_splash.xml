@@ -4,23 +4,21 @@
     xmlns:levenimText="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lay_splash_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:src="@drawable/logo"
-        android:visibility="invisible"/>
+        android:background="@drawable/splash"
+        android:visibility="visible"/>
 
     <LinearLayout
         android:id="@+id/lay_symbol"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:orientation="horizontal"
-        android:gravity="center"
         android:layout_centerInParent="true">
         <com.example.amitthakkar.myapplication.customview.LevenimMTTextView
             android:id="@+id/txt_h"
@@ -28,6 +26,7 @@
             android:layout_height="wrap_content"
             android:textSize="70sp"
             android:textColor="#8FC54D"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt.ttf"
             android:text="H"/>
 
@@ -38,6 +37,7 @@
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt.ttf"
             android:text="e"/>
 
@@ -48,6 +48,7 @@
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt.ttf"
             android:text="a"/>
 
@@ -58,6 +59,7 @@
             android:textSize="60sp"
             android:visibility="visible"
             android:textColor="#8FC54D"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt.ttf"
             android:text="l"/>
 
@@ -69,6 +71,7 @@
             android:visibility="visible"
             android:textColor="#00B1F6"
             android:textStyle="bold"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt_bold.ttf"
             android:text="E"/>
 
@@ -80,6 +83,7 @@
             android:visibility="visible"
             android:textColor="#00B1F6"
             android:textStyle="bold"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt_bold.ttf"
             android:text="a"/>
 
@@ -91,20 +95,20 @@
             android:visibility="visible"
             android:textStyle="bold"
             android:textColor="#00B1F6"
+            android:layout_marginTop="120dp"
             levenimText:fontName="levenim_mt_bold.ttf"
             android:text="s"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="-10dp"
             android:layout_marginLeft="-25dp">
 
             <ImageView
                 android:id="@+id/img_y"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="120dp"
                 android:src="@drawable/logo_ya"/>
 
             <ImageView
@@ -112,7 +116,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/logo_round"
-                android:layout_above="@+id/img_y"
+                android:layout_marginTop="120dp"
                 android:layout_marginBottom="-20dp"
                 android:layout_marginLeft="42dp" />
 

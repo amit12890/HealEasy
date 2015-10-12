@@ -62,6 +62,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
 		setContentView(R.layout.single_place);
 
 		place = (PlaceDetails) getIntent().getSerializableExtra("place");
@@ -116,7 +117,7 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		});
 
 		imgWhatsApp = (ImageView) findViewById(R.id.img_whatsapp);
-		imgWhatsApp.setColorFilter(Color.parseColor("#A2A2A2"));
+		//imgWhatsApp.setColorFilter(Color.parseColor("#A2A2A2"));
 		/*if(isPackageInstalled("com.whatsapp"))
 			imgWhatsApp.setVisibility(View.VISIBLE);
 		else
@@ -571,4 +572,9 @@ public class SinglePlaceActivity extends Activity implements OnMapReadyCallback 
 		return poly;
 	}
 
+	@Override
+	protected void onPause(){
+		super.onPause();
+		overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
+	}
 }

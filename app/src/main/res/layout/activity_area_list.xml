@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00ffffff">
+    android:background="#ffffff">
 
     <RelativeLayout
         android:id="@+id/lay_title"
@@ -41,7 +41,7 @@
 
 
     </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/lay_filter_place"
         android:layout_below="@+id/lay_title"
         android:layout_width="match_parent"
@@ -54,14 +54,23 @@
             android:id="@+id/edt_filter_area"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff"
+            android:background="#F0F0F0"
             android:hint="Search State"
+            android:textColor="#9D9D9D"
             android:textSize="14sp"
             android:singleLine="true"
             android:paddingLeft="10dp"/>
 
-    </LinearLayout>
-    <com.rey.material.widget.ListView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_search"/>
+
+    </RelativeLayout>
+    <ListView
         android:id="@+id/list_place"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"

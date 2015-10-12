@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingTop="10dp">
 
-    <TextView android:id="@+id/txt_name"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="Name"
-        android:textStyle="bold"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:textSize="16sp"/>
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="50dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <TextView android:id="@+id/txt_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="Name"
+            android:gravity="center_vertical"
+            android:textColor="#00A9EF"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"/>
 
-    <TextView android:id="@+id/txt_distance"
-        android:layout_width="fill_parent"
+        <TextView android:id="@+id/txt_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:text="Distance"
+            android:layout_below="@+id/txt_name"
+            android:textColor="#848484"
+            android:visibility="visible"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
-        android:text="Distance"
-        android:visibility="visible"
-        android:textSize="14sp"/>
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow"
+        android:layout_marginRight="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ECECEC"
+        android:layout_alignParentBottom="true"/>
     
 
-</LinearLayout>
+</RelativeLayout>

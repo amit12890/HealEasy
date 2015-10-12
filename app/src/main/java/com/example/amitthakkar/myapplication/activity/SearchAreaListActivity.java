@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.example.amitthakkar.myapplication.DatabaseHandler;
 import com.example.amitthakkar.myapplication.R;
@@ -16,7 +17,7 @@ import com.example.amitthakkar.myapplication.adapter.AreaListAdapter;
 import com.example.amitthakkar.myapplication.adapter.StateListAdapter;
 import com.example.amitthakkar.myapplication.model.Area;
 import com.example.amitthakkar.myapplication.utility.Utility;
-import com.rey.material.widget.ListView;
+
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class SearchAreaListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.activity_area_list);
 
         util = new Utility(SearchAreaListActivity.this);
@@ -122,4 +124,9 @@ public class SearchAreaListActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
+    }
 }

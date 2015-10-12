@@ -1,45 +1,38 @@
 package com.example.amitthakkar.myapplication.activity;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.amitthakkar.myapplication.AppController;
-import com.example.amitthakkar.myapplication.model.PlaceDetails;
-import com.example.amitthakkar.myapplication.adapter.PlaceListAdapter;
-import com.example.amitthakkar.myapplication.R;
 import com.example.amitthakkar.myapplication.AppPreferences;
+import com.example.amitthakkar.myapplication.R;
+import com.example.amitthakkar.myapplication.adapter.PlaceListAdapter;
+import com.example.amitthakkar.myapplication.model.PlaceDetails;
 import com.example.amitthakkar.myapplication.utility.Utility;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.rey.material.widget.ListView;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import se.walkercrou.places.GooglePlaces;
 import se.walkercrou.places.Place;
@@ -73,6 +66,7 @@ public class PlaceListActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.activity_main);
 
         util = new Utility(PlaceListActivity.this);
@@ -378,4 +372,10 @@ public class PlaceListActivity extends AppCompatActivity  {
         });
     }
 
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
+    }
 }

@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,LocationListener {
 
 
-    RelativeLayout layHospital,layPharmacy,layDiagnosticCenter,layMedicalEquipment,layHealthPlanner;
+    LinearLayout layHospital,layPharmacy,layDiagnosticCenter,layMedicalEquipment,layHealthPlanner;
     public static TextView txtState,txtAreaName;
     Utility utility;
     public static String AREA_NAME="",STATE_NAME="";
@@ -58,15 +59,15 @@ public class DashBoardActivity extends Activity implements View.OnClickListener,
         txtAreaName.setOnClickListener(this);
         txtState = (TextView) findViewById(R.id.txt_state_name);
         txtState.setOnClickListener(this);
-        layHospital = (RelativeLayout) findViewById(R.id.lay_hospitals);
+        layHospital = (LinearLayout) findViewById(R.id.lay_hospitals);
         layHospital.setOnClickListener(this);
-        layPharmacy = (RelativeLayout) findViewById(R.id.lay_pharmacy);
+        layPharmacy = (LinearLayout) findViewById(R.id.lay_pharmacy);
         layPharmacy.setOnClickListener(this);
-        layDiagnosticCenter = (RelativeLayout) findViewById(R.id.lay_labs);
+        layDiagnosticCenter = (LinearLayout) findViewById(R.id.lay_labs);
         layDiagnosticCenter.setOnClickListener(this);
-        layMedicalEquipment = (RelativeLayout) findViewById(R.id.lay_medical_equipment);
+        layMedicalEquipment = (LinearLayout) findViewById(R.id.lay_medical_equipment);
         layMedicalEquipment.setOnClickListener(this);
-        layHealthPlanner = (RelativeLayout) findViewById(R.id.lay_health_planner);
+        layHealthPlanner = (LinearLayout) findViewById(R.id.lay_health_planner);
         layHealthPlanner.setOnClickListener(this);
 
         DatabaseHandler dbHandler = new DatabaseHandler(DashBoardActivity.this);

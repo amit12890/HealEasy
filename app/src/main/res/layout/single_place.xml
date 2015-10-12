@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lay_rootview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#e9e9e9">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,7 +83,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:padding="7dp"
-            android:background="#ffffff"
+            android:background="#bfffffff"
             android:src="@drawable/fullscreen"
             android:layout_above="@+id/scrollview"
             android:layout_alignParentLeft="true"
@@ -98,35 +99,78 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dip">
+                android:orientation="vertical">
 
-
-                <!-- Name Label -->
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:text="Name:"
-                    android:textStyle="bold" />
-
-                <!--  Name Value -->
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-
-                <!-- Address Label -->
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dip"
-                        android:layout_marginTop="5dip"
-                        android:text="Address:"
-                        android:textStyle="bold" />
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_user"/>
+                    <!--  Name Value -->
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_toRightOf="@+id/img_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:padding="5dp"
+                        android:textColor="#8C8C8C"
+                        android:textSize="14sp"
+                        android:text="Hospital Name"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ECECEC"
+                    android:layout_alignParentBottom="true"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/img_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_map"/>
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_toRightOf="@+id/img_address"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textColor="#8C8C8C"
+                        android:textSize="14sp"
+                        android:layout_marginRight="50dp"
+                        android:text="Address"/>
+
+                    <TextView
+                        android:id="@+id/distance"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/address"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textColor="#8C8C8C"
+                        android:textSize="14sp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/img_address"
+                        android:text="Distance"
+                        android:textStyle="italic" />
 
                     <com.example.amitthakkar.myapplication.customview.TintableImageView
                         android:id="@+id/img_whatsapp"
@@ -140,84 +184,108 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ECECEC"
+                    android:layout_alignParentBottom="true"/>
 
-                <!--  Address Value -->
-
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="fill_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic" />
+                    android:padding="10dp">
 
-                <!-- Phone Number Label -->
+                    <ImageView
+                        android:id="@+id/img_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_phone"/>
+                    <!--  Name Value -->
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_toRightOf="@+id/img_phone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:padding="5dp"
+                        android:textColor="#8C8C8C"
+                        android:textSize="14sp"
+                        android:text="Phone Number"/>
+                </RelativeLayout>
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dip"
-                    android:layout_marginTop="5dip"
-                    android:text="Phone Number:"
-                    android:textStyle="bold" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#ECECEC"
+                    android:layout_alignParentBottom="true"/>
 
-                <TextView
-                    android:id="@+id/phone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dip" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:padding="10dp">
 
-                        <TextView
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dip"
-                            android:layout_marginTop="10dip"
-                            android:text="Rating:"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/rating"
+                        <ImageView
+                            android:id="@+id/img_rate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dip"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_star"/>
+                        <!--  Name Value -->
+                        <TextView
+                            android:id="@+id/rating"
+                            android:layout_toRightOf="@+id/img_rate"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:padding="5dp"
+                            android:textColor="#8C8C8C"
+                            android:textSize="14sp"
                             android:text="5"/>
-                    </LinearLayout>
+                    </RelativeLayout>
 
-                    <LinearLayout
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#ececec"/>
+
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:padding="10dp">
 
-                        <TextView
-                            android:layout_width="75dp"
+                        <ImageView
+                            android:id="@+id/img_review"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dip"
-                            android:layout_marginTop="10dip"
-                            android:text="Reviews:"
-                            android:textStyle="bold" />
-
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_chat"/>
+                        <!--  Name Value -->
                         <TextView
                             android:id="@+id/review"
+                            android:layout_toRightOf="@+id/img_review"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="5"
-                            android:layout_marginTop="10dip" />
-                    </LinearLayout>
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:padding="5dp"
+                            android:textColor="#8C8C8C"
+                            android:textSize="14sp"
+                            android:text="20"/>
+                    </RelativeLayout>
+
+
+
 
 
                 </LinearLayout>
